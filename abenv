@@ -50,7 +50,8 @@ function waitforlink {
     echo $hosti:$porti
   done | sort -u)
   
-  for p in $pl
+  for q in $pl
+  p=$(echo $q | sed 's/:/ /')
   do
     echo waiting for $p
     while ! nc -w 1 $p 2>/dev/null
