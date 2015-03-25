@@ -51,8 +51,8 @@ function waitforlink {
   done | sort -u)
   
   for q in $pl
-  p=$(echo $q | sed 's/:/ /')
   do
+    p=$(echo $q | sed 's/:/ /')
     echo waiting for $p
     while ! nc -w 1 $p 2>/dev/null
     do
