@@ -58,7 +58,7 @@ function waitforlink {
       echo -n .
       sleep 1
       (( tov-- ))
-      if [ tov -lt 0 ]
+      if [ $tov -lt 0 ]
       then
         echo 'timeout!!'
         return 1
