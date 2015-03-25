@@ -23,3 +23,48 @@ WEBSOCKET=ws://router:8080/ws
 DSN="dbname=${DB_NAME} host=${DB_HOST} user=${DB_USER}"
 
 set -o vi
+
+# this is a simple timeout function for linking containers
+DEFAULT_WAIT_TIME="60"
+
+function waitforlink {
+  # first argument is the amount of seconds that are allowed for the wait
+  # period. 60 second is the default (long time)
+  tov=${1-$DEFAULT_WAIT_TIME}
+  if [ $tov -lt 0 ]
+  then
+    return 1
+  fi
+
+  #
+  # check for linked dependencies
+  #
+  hosts=($(env | grep _TCP_ADDR | cut -d = -f 1))
+  ports=($(env | grep _TCP_PORT | cut -d = -f 1))
+  
+  pl=$(for host in ${hosts[@]};
+  do
+    port=$(echo $host | sed 's/_ADDR/_PORT/')
+    hosti=$(env | egrep ^$host | cut -d = -f 2)
+    porti=$(env | egrep ^$port | cut -d = -f 2)
+    echo $hosti:$porti
+  done | sort -u)
+  
+  for p in $pl
+  do
+    echo waiting for $p
+    while ! nc -w 1 $p 2>/dev/null
+    do
+      echo -n .
+      sleep 1
+      (( tov-- ))
+      if [ tov -lt 0 ]
+      then
+        echo 'timeout!!'
+        return 1
+      fi
+    done
+    echo 'X'
+  done
+  return 0
+}
