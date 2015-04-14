@@ -5,8 +5,9 @@
 
 PG_VERSION=9.4
 PG_HOME="/var/lib/postgresql"
-PG_SRC_CONFDIR="/etc/postgresql/${PG_VERSION}/main"
-PG_CONFDIR="${PG_HOME}/etc/postgresql/${PG_VERSION}/main"
+PG_SRC_CONF="/usr/lib/postgresql/etc.tar.gz"
+PG_SRC_CONF_DIR="/etc/postgresql"
+PG_CONFDIR="/etc/postgresql/${PG_VERSION}/main"
 PG_BINDIR="/usr/lib/postgresql/${PG_VERSION}/bin"
 PG_DATADIR="${PG_HOME}/${PG_VERSION}/main"
 PSQL_TRUST_LOCALNET=true
