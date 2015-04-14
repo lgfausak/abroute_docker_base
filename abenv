@@ -35,8 +35,8 @@ DEFAULT_WAIT_TYPE=ethernet
 function waitforfile {
   # first argument is the file to wait for
   # second argument is the number of seconds, 60 default
-  fwf=${1-$DEFAULT_WAIT_FILE}
-  tov=${2-$DEFAULT_WAIT_TIME}
+  fwf=${WAIT_FILE-$DEFAULT_WAIT_FILE}
+  tov=${WAIT_TIME-$DEFAULT_WAIT_TIME}
   if [ $tov -lt 0 ]
   then
     echo 'timeout must be greater than 0 in waitforfile()' >&2
