@@ -19,7 +19,8 @@ RUN apt-get update \
                        python-dev python-pip \
  && pip install sqlauth \
  && rm -rf /var/lib/postgresql \
- && rm -rf /var/lib/apt/lists/* # 20150220
+ && rm -rf /var/lib/apt/lists/* \
+ && (cd /etc/postgresql; tar czvf /usr/lib/postgresql/9.4/etc.tar.gz .)
 
 
 COPY abenv /usr/local/etc/

@@ -28,6 +28,8 @@ set -o vi
 # this is a simple timeout function for linking containers
 DEFAULT_WAIT_TIME=60
 DEFAULT_WAIT_FILE=FOOBAR
+DEFAULT_WAIT_TYPE=ethernet
+#DEFAULT_WAIT_TYPE=file
 
 function waitforfile {
   # first argument is the file to wait for
