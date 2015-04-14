@@ -5,7 +5,8 @@
 
 PG_VERSION=9.4
 PG_HOME="/var/lib/postgresql"
-PG_CONFDIR="/etc/postgresql/${PG_VERSION}/main"
+PG_SRC_CONFDIR="/etc/postgresql/${PG_VERSION}/main"
+PG_CONFDIR="${PG_HOME}/etc/postgresql/${PG_VERSION}/main"
 PG_BINDIR="/usr/lib/postgresql/${PG_VERSION}/bin"
 PG_DATADIR="${PG_HOME}/${PG_VERSION}/main"
 PSQL_TRUST_LOCALNET=true
@@ -25,7 +26,38 @@ DSN="dbname=${DB_NAME} host=${DB_HOST} user=${DB_USER}"
 set -o vi
 
 # this is a simple timeout function for linking containers
-DEFAULT_WAIT_TIME="60"
+DEFAULT_WAIT_TIME=60
+DEFAULT_WAIT_FILE=FOOBAR
+
+function waitforfile {
+  # first argument is the file to wait for
+  # second argument is the number of seconds, 60 default
+  fwf=${1-$DEFAULT_WAIT_FILE}
+  tov=${2-$DEFAULT_WAIT_TIME}
+  if [ $tov -lt 0 ]
+  then
+    echo 'timeout must be greater than 0 in waitforfile()' >&2
+    return 1
+  fi
+  if [ $fwf == 'FOOBAR' ]
+  then
+    echo 'must supply file name in waitforfile()' >&2
+    return 1
+  fi
+
+  while [ ! -f $fwf ]
+  do
+    echo -n .
+    sleep 1
+    (( tov-- ))
+    if [ $tov -lt 0 ]
+    then
+      echo 'timeout!!'
+      return 1
+    fi
+  done
+  return 0
+}
 
 function waitforlink {
   # first argument is the amount of seconds that are allowed for the wait
@@ -69,3 +101,4 @@ function waitforlink {
   done
   return 0
 }
+
