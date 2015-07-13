@@ -21,7 +21,9 @@ DB_HOST=pg
 
 export DB_NAME DB_USER DB_PASS DB_HOST
 
-WEBSOCKET=ws://router:8080/ws
+AB_PORT=18080
+AB_ROUTER=router
+WEBSOCKET=ws://${AB_ROUTER}:${AB_PORT}/ws
 DSN="dbname=${DB_NAME} host=${DB_HOST} user=${DB_USER}"
 
 set -o vi
