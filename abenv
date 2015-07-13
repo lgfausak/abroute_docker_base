@@ -91,7 +91,7 @@ function waitforlink {
   do
     p=$(echo $q | sed 's/:/ /')
     echo waiting for $p
-    while ! nc -w 1 $p 2>/dev/null
+    while ! /bin/nc -w 1 $p
     do
       echo -n .
       sleep 1
